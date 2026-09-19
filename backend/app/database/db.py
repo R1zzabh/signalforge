@@ -22,9 +22,12 @@ def init_db():
     CREATE TABLE IF NOT EXISTS allowlist_entries (id TEXT PRIMARY KEY, payload TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS responses (id TEXT PRIMARY KEY, incident_id TEXT, payload TEXT NOT NULL, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS rule_definitions (id TEXT PRIMARY KEY, version TEXT NOT NULL, enabled INTEGER NOT NULL, payload TEXT NOT NULL, updated_at TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS lab_events (event_id TEXT PRIMARY KEY, scenario TEXT, source TEXT, target TEXT, timestamp TEXT NOT NULL, event_type TEXT NOT NULL, payload TEXT NOT NULL, processed INTEGER NOT NULL DEFAULT 0, incident_id TEXT);
     CREATE INDEX IF NOT EXISTS idx_incidents_created ON incidents(created_at);
     CREATE INDEX IF NOT EXISTS idx_audit_incident ON audit_logs(incident_id);
     CREATE INDEX IF NOT EXISTS idx_alerts_created ON alerts(created_at);
+    CREATE INDEX IF NOT EXISTS idx_lab_events_timestamp ON lab_events(timestamp);
+    CREATE INDEX IF NOT EXISTS idx_lab_events_type ON lab_events(event_type);
     ''')
     c.commit(); c.close()
 
@@ -65,3 +68,13 @@ def save_response(response):
 
 def get_response(response_id):
     c = connect(); row = c.execute('SELECT payload FROM responses WHERE id=?', (response_id,)).fetchone(); c.close(); return json.loads(row['payload']) if row else None
+
+def save_lab_event(event, incident_id=None, processed=True):
+    c = connect(); c.execute('INSERT OR REPLACE INTO lab_events(event_id,scenario,source,target,timestamp,event_type,payload,processed,incident_id) VALUES (?,?,?,?,?,?,?,?,?)', (event['event_id'], event.get('scenario'), event.get('raw_source', 'lab'), event.get('target_asset'), event['timestamp'], event['event_type'], json.dumps(event), int(processed), incident_id)); c.commit(); c.close(); return event
+
+def list_lab_events(limit=200):
+    c = connect(); rows = c.execute('SELECT payload,processed,incident_id FROM lab_events ORDER BY timestamp DESC LIMIT ?', (limit,)).fetchall(); c.close()
+    return [{**json.loads(row['payload']), 'processed': bool(row['processed']), 'incident_id': row['incident_id']} for row in rows]
+
+def clear_lab_events():
+    c = connect(); c.execute('DELETE FROM lab_events'); count = c.total_changes; c.commit(); c.close(); return count

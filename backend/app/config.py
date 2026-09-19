@@ -1,6 +1,9 @@
 import os
 
-DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
+SIGNALFORGE_MODE = os.getenv("SIGNALFORGE_MODE", "LAB_MODE").upper()
+LAB_MODE = SIGNALFORGE_MODE == "LAB_MODE"
+PRODUCTION_MODE = SIGNALFORGE_MODE == "PRODUCTION_MODE"
+DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() == "true"  # legacy internal fixture switch
 DATABASE_PATH = os.getenv("DATABASE_PATH", os.path.join(os.path.dirname(os.path.dirname(__file__)), "soc.db"))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 FRONTEND_ORIGIN = os.getenv("FRONTEND_ORIGIN", "http://localhost:3000")

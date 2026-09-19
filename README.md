@@ -19,11 +19,12 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Demo mode is the default and requires no API keys or internet. Set `DEMO_MODE=false` only when provider adapters and credentials are configured; unavailable live providers are reported as unavailable, not fabricated.
+Open http://localhost:3000/lab. `LAB_MODE` is the primary presentation environment and uses an isolated Docker cyber range. `LIVE_MODE` and `PRODUCTION_MODE` are reserved for configured provider/database deployments. The old deterministic `/demo` route is retained only as an internal fixture runner.
 
 ## Key features
 
-- Dashboard, alert intake, incident detail, demo lab, risk analyzer, rule catalog, automation view, analytics, and audit log.
+- Dashboard, alert intake, incident detail, isolated lab control center, risk analyzer, rule catalog, automation view, analytics, and audit log.
+- Real LAB_MODE target login, attacker controller, telemetry bridge, C2 simulation, CVE lab simulation, live SSE event stream, and reset behavior.
 - Deterministic 100-point risk model with reputation, threat intelligence, behavior, vulnerability, asset, and correlation signals.
 - SQLite records complete investigations and every automation stage.
 - Critical incidents require analyst approval before disruptive containment (the UI only recommends action).
@@ -31,16 +32,16 @@ Open http://localhost:3000. Demo mode is the default and requires no API keys or
 
 ## API
 
-See [docs/API.md](docs/API.md). The central contract is `POST /investigate`; demo scenarios use `POST /demo/run/{scenario}`.
+See [docs/API.md](docs/API.md). The live lab contract is `POST /lab/events`; predefined actions are launched through `POST /lab/scenarios/{scenario}` and stream through `GET /events/stream`.
 
-## Demo
+## LAB_MODE presentation
 
-1. Start backend and frontend.
-2. Open `/demo`.
-3. Select `SSH Brute Force — Critical` and click `RUN SCENARIO`.
-4. Watch actual backend stages resolve, then open the stored incident.
-5. Show `/audit`, `/analytics`, and `/alerts` to demonstrate persistence.
-6. For RPA, open UiPath Studio with `uipath/Main.xaml`, configure the local Excel input, and run it against the same backend.
+1. Run `docker compose -f docker-compose.lab.yml up --build`.
+2. Open `/lab` and confirm `LAB_MODE · ISOLATED` plus component status.
+3. Open the real target login page and perform a normal login.
+4. Run brute force, credential stuffing, port scan, C2, CVE, and allowlisted scanner actions from the control center.
+5. Watch raw telemetry, rule evidence, risk updates, incident creation, response approval, and audit events.
+6. For RPA, use `/automation/inbox` with `uipath/Main.xaml` against the same backend.
 
 ## Limitations
 

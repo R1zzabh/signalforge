@@ -12,6 +12,8 @@ Updated 2026-09-19. This is an evidence-backed status report, not a blanket prod
 - Frontend `npm run build` passes.
 - Python compile and pipeline smoke verification pass across five representative scenarios; each persisted result contains 30 rule results.
 - All supplied UiPath XAML files parse as valid XML.
+- LAB_MODE implementation includes an isolated Compose network, target login/event generation, telemetry bridge, fixed-scope attacker controller, C2 simulator, CVE lab simulation, `/lab/events`, `/events/stream`, `/lab/status`, reset, automation inbox contracts, and a real `/lab` control center.
+- LAB_MODE static validation passed for six Compose services and an `internal: true` lab network; 4 lab ingestion tests are included in the 97 passing backend tests.
 - DEMO_MODE remains offline and deterministic; the critical server, credential stuffing, CVE, allowlisted scanner, and alert-burst scenarios were exercised through the Python pipeline.
 - SQLite persistence now includes entities for assets, accounts, allowlists, responses, rule definitions, incidents, alerts, notifications, runs, and audit logs.
 - API surface includes health/status, auth placeholder, incidents, rule registry/metrics, enrichment/risk, demo, assets, accounts, allowlist, response approval/rejection, reports, notifications, audit, and analytics.
@@ -23,6 +25,7 @@ Updated 2026-09-19. This is an evidence-backed status report, not a blanket prod
 - Live VirusTotal, AbuseIPDB, NVD, GeoIP, MITRE, OpenAI, Outlook, PostgreSQL, and secret-manager execution require credentials and deployment configuration; no live call was claimed or made.
 - Reports and notifications expose contracts and demo previews; production PDF/email delivery still needs deployment-specific adapters.
 - UiPath artifacts preserve the orchestration sequence, but typed Studio activity arguments and an executed UiPath run were not available in this environment.
+- Docker Engine is not installed in this workspace, so the containerized cyber range was not runtime-executed here. Docker startup and scenario execution remain host acceptance steps.
 - Frontend routes are operationally present and wired to the API for core views; browser Playwright smoke tests and full click-through have not been run in this pass. An in-process HTTP smoke probe was interrupted and is not counted as passed.
 - Alembic migrations, Docker/Compose, CI workflow, and the 100+ test target remain follow-up hardening work.
 

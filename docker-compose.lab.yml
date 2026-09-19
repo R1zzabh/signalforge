@@ -1,0 +1,63 @@
+services:
+  signalforge-backend:
+    build: ./backend
+    environment:
+      SIGNALFORGE_MODE: LAB_MODE
+      LAB_CONTROLLER_URL: http://sf-lab-controller:9101
+      DATABASE_PATH: /data/soc.db
+      FRONTEND_ORIGIN: http://localhost:3000
+    volumes: ["signalforge-data:/data"]
+    ports: ["8000:8000"]
+    networks: [signalforge_lab]
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+  signalforge-frontend:
+    build: ./frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports: ["3000:3000"]
+    depends_on: [signalforge-backend]
+    networks: [signalforge_lab]
+    command: ["npm", "run", "dev", "--", "--hostname", "0.0.0.0", "--port", "3000"]
+  sf-target:
+    build:
+      context: .
+      dockerfile: lab/Dockerfile
+    environment:
+      TELEMETRY_URL: http://sf-telemetry:9100/events
+      C2_URL: http://sf-c2:9200/beacon
+    networks: [signalforge_lab]
+    ports: ["8080:8080"]
+    command: ["python", "/opt/lab/target/app.py"]
+  sf-telemetry:
+    build:
+      context: .
+      dockerfile: lab/Dockerfile
+    environment:
+      SIGNALFORGE_URL: http://signalforge-backend:8000/lab/events
+    networks: [signalforge_lab]
+    command: ["python", "/opt/lab/telemetry/collector.py"]
+  sf-lab-controller:
+    build:
+      context: .
+      dockerfile: lab/Dockerfile
+    environment:
+      TARGET_URL: http://sf-target:8080
+      TELEMETRY_URL: http://sf-telemetry:9100/events
+      C2_URL: http://sf-c2:9200
+    networks: [signalforge_lab]
+    ports: ["9101:9101"]
+    command: ["python", "/opt/lab/controller/app.py"]
+  sf-c2:
+    build:
+      context: .
+      dockerfile: lab/Dockerfile
+    environment:
+      TELEMETRY_URL: http://sf-telemetry:9100/events
+    networks: [signalforge_lab]
+    command: ["python", "/opt/lab/c2/server.py"]
+networks:
+  signalforge_lab:
+    name: signalforge_lab_isolated
+    internal: true
+volumes:
+  signalforge-data:
