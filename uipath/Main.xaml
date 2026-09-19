@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Activity mc:Ignorable="sap sap2010" x:Class="SignalForge.Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Sequence DisplayName="SignalForge — Main RPA Orchestrator">
+    <LogMessage Level="Info" Message="SignalForge: starting Excel alert intake" />
+    <InvokeWorkflowFile WorkflowFileName="ReadAlerts.xaml" />
+    <InvokeWorkflowFile WorkflowFileName="ValidateAlert.xaml" />
+    <InvokeWorkflowFile WorkflowFileName="ExtractIOC.xaml" />
+    <RetryScope NumberOfRetries="3" DisplayName="Retry backend investigation">
+      <RetryScope.Action><InvokeWorkflowFile WorkflowFileName="CallBackend.xaml" /></RetryScope.Action>
+      <RetryScope.Condition><ActivityCondition /></RetryScope.Condition>
+    </RetryScope>
+    <InvokeWorkflowFile WorkflowFileName="ProcessInvestigation.xaml" />
+    <InvokeWorkflowFile WorkflowFileName="RouteBySeverity.xaml" />
+    <InvokeWorkflowFile WorkflowFileName="GenerateReport.xaml" />
+    <InvokeWorkflowFile WorkflowFileName="SendNotification.xaml" />
+    <InvokeWorkflowFile WorkflowFileName="WriteResults.xaml" />
+    <LogMessage Level="Info" Message="SignalForge: investigation complete" />
+  </Sequence>
+</Activity>

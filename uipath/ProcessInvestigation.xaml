@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Process investigation"><LogMessage Level="Info" Message="Read risk, severity, rules, MITRE and recommendations" /></Sequence></Activity>

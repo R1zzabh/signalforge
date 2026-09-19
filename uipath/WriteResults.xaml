@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Write results"><WriteLine Text="Write incident_id, score, severity and status to results.xlsx" /></Sequence></Activity>

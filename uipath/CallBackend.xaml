@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Call FastAPI"><LogMessage Level="Info" Message="POST http://localhost:8000/investigate with alert JSON" /></Sequence></Activity>

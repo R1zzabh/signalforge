@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Read alerts from Excel"><ReadRange WorkbookPath="alerts.xlsx" SheetName="Alerts" AddHeaders="True" /></Sequence></Activity>

@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Extract IOCs"><LogMessage Level="Info" Message="Extract source/destination IP, domain and hash indicators" /></Sequence></Activity>

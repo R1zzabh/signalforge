@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Validate alert"><LogMessage Level="Info" Message="Validate required IP, event type and asset fields" /></Sequence></Activity>

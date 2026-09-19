@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Flowchart DisplayName="Route by severity"><FlowDecision DisplayName="Critical requires analyst approval" /></Flowchart></Activity>

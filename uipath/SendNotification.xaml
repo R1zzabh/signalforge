@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Send notification"><LogMessage Level="Info" Message="DEMO_EMAIL_MODE stores notification payload for analyst review" /></Sequence></Activity>

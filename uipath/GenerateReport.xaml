@@ -1,0 +1,1 @@
+<Activity xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"><Sequence DisplayName="Generate report"><LogMessage Level="Info" Message="POST /reports/generate and save returned HTML/PDF" /></Sequence></Activity>
