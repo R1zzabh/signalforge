@@ -54,5 +54,5 @@ def stub(port):
     ThreadingHTTPServer(("0.0.0.0", port), Stub).serve_forever()
 
 if __name__ == "__main__":
-    for port in (22, 80, 443, 9000, 9100, 9200, 9300, 9400, 9500, 9999): threading.Thread(target=stub, args=(port,), daemon=True).start()
+    for port in (22, 80, 443, 9000, 9300, 9400, 9500, 9999): threading.Thread(target=stub, args=(port,), daemon=True).start()
     ThreadingHTTPServer(("0.0.0.0", 8080), Handler).serve_forever()
